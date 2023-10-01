@@ -12,23 +12,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 /* TODO: 추가과제
 HandlerMethodArgumentResolver는 메소드 파라미터들을 인자값들에 주입해주는 인터페이스이다
-HandlerMethodArgumentResolver를 유형으로 가지고, 내부의 로직처리를 위해 UserService를 상속하는 커스텀 HandlerMethodArgumentResolver를 구현해주면 된다(그게 바로 UserArgumentResolver)
+HandlerMethodArgumentResolver 인터페이스에 대해 그 구현체로써 내부의 로직처리를 위해 UserService를 주입받는 UserArgumentResolver를 구현하자.
 내부에는 어떤 파라미터들에 대해서 작업을 수행할건지(지원할 건지) 여부를 결정하는 supportsParameter와, 실제로 그 파라미터들을 가지고 어떤 로직으로 처리를 해줄지 결정하는 resolveArgument를 정의해줘야 한다. */
 
 
-class UserArgumentResolver(
-    private val userService: UserService, //resolveArgument에서의 로직 처리를 위해 상속 받는다.
-) : HandlerMethodArgumentResolver {
+class UserArgumentResolver( //구현체
+    private val userService: UserService, //resolveArgument에서의 로직 처리를 위해 주입! 받는다.
+) : HandlerMethodArgumentResolver {  //인터페이스
 
     override fun supportsParameter(parameter: MethodParameter): Boolean { //처리 대상이 되는 파라미터를 지정하기 때문에 boolean 형이다.
-        return parameter.parameterType == User::class.java  /*User에 정의되어 있는 모든 파라미터들을 대상으로 설정하는 코드이다.(::를 이용해서 각 파라미터가 정의되는 class들을 한번에 포함시킨다)*/
-    } //비록 지금은 User 내의 image에 대해서만 사용하긴 하겠지만 일단 다 지정해두자
+        return parameter.parameterType == User::class.java  /*controller method 에 들어오는 parameter 중 User 라는 타입이 있으면 자신이 그것에 대해 지원하는 argumentresolver 라고 알려주는 역할*/
+    } 
 
     override fun resolveArgument(//실제 해당 파라미터들로 처리해야할 로직에 대해서 정의한다. 우리는 응답 토큰의 처리에 대해서 간결하게 만들고 싶은 거니까 그것만 정의하면 된다.
         parameter: MethodParameter,
         mavContainer: ModelAndViewContainer?,
         webRequest: NativeWebRequest,
-        binderFactory: WebDataBinderFactory?, //여기에 있는 4개 파라미터는 원래 이렇게 정의해야하는 듯 하다(이유는 모르겠음)
+        binderFactory: WebDataBinderFactory?, //변수의 유형이 이렇게 되어있는 이유 -> override 라서 구현한 interface 에 해당하는 HandlerMethodArgumentResolver에 정의된 메서드의 signature(형태)대로 일치해야 언어 규약을 지키는 것이기 때문
     ): User {
         val accessToken = webRequest.getHeader("Authorization")?.split(" ")?.get(1) ?: ""
         /*토큰을 만드는 과정을 미리 처리하기 위해 위와 같은 코드를 작성했다.
