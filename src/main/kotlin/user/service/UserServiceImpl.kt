@@ -5,11 +5,11 @@ import com.wafflestudio.seminar.spring2023.user.repository.UserRepository
 import org.springframework.stereotype.Service
 
 @Service
-class UserServiceImpl(
-    private val userRepository: UserRepository,
-) : UserService {
+class UserServiceImpl( //UserService의 구현체를 만드는 것임, 실제 돌아가는 서버의 로직을 구현하는 장소이다
+    private val userRepository: UserRepository, //UserRepository를 주입 받아온다
+) : UserService { //구현체라서 속성은 UserService 인터페이스로 지정
 
-    override fun signUp(username: String, password: String, image: String): User {
+    override fun signUp(username: String, password: String, image: String): User { //구현체에서 이미 정의가 된 함수라서 override 붙여주기
         //조건에 따른 예외 처리
         //유저 이름과 비밀번호는 4글자 이상
         if(username.length < 4) throw SignUpBadUsernameException()
