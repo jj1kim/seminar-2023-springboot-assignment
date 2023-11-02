@@ -3,6 +3,7 @@ package com.wafflestudio.seminar.spring2023.playlist
 import com.wafflestudio.seminar.spring2023.QueryCounter
 import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistNotFoundException
 import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistService
+import com.wafflestudio.seminar.spring2023.playlist.service.PlaylistServiceImpl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -14,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 @SpringBootTest
 class PlaylistServiceTest @Autowired constructor(
-    private val playlistService: PlaylistService,
+    private val playlistService: PlaylistServiceImpl,
     private val queryCounter: QueryCounter,
 ) {
 
@@ -52,7 +53,7 @@ class PlaylistServiceTest @Autowired constructor(
 
         assertThat(playlist).isNotNull
 
-        playlist!!.run {
+        playlist.run {
             assertThat(id).isEqualTo(1L)
             assertThat(title).isEqualTo("Today's Top Hits")
             assertThat(songs.map { it.id })
@@ -71,7 +72,7 @@ class PlaylistServiceTest @Autowired constructor(
 
         assertThat(playlist).isNotNull
 
-        playlist!!.run {
+        playlist.run {
             assertThat(id).isEqualTo(1L)
             assertThat(title).isEqualTo("Today's Top Hits")
             assertThat(songs.map { it.id })

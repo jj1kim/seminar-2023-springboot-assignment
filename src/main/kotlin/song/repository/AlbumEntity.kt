@@ -1,6 +1,12 @@
 package com.wafflestudio.seminar.spring2023.song.repository
 
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 
 @Entity(name = "albums")
 class AlbumEntity(
@@ -9,10 +15,7 @@ class AlbumEntity(
     val id: Long = 0L,
     val title: String,
     val image: String,
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "artist_id")
     val artist: ArtistEntity,
-    @OneToMany(mappedBy = "album")
-    val song : List<SongEntity>, //연관관계 추가
-
 )
