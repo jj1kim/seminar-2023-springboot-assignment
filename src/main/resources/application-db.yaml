@@ -19,4 +19,5 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/spring_seminar
     driver-class-name: com.mysql.jdbc.Driver
-    username: root
+    username: jj1kim
+    password: jeewon1569!

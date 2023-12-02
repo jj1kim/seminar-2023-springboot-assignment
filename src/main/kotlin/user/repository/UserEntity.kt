@@ -11,6 +11,4 @@ class UserEntity(
     val username: String,
     val password: String,
     val image: String,
-    @OneToMany(mappedBy = "user") //연관관계 추가
-    val playlistLikes: MutableList<PlaylistLikeEntity> = mutableListOf() //뮤터블리스트로 정의
 )
